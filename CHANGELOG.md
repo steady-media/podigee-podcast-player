@@ -1,10 +1,24 @@
 # Changelog
 
+## 2018-03-23
+
+### Changes
+
+- Links in episode description are rewritten to always open in parent window
+
+## 2018-03-13
+
+### Fixes
+
+- fix umlauts in episode title being cut off in Firefox
+
 ## 2018-03-09
 
 ### Added
 
 - It is now possible to configure the colors of the default theme (not stable yet!)
+- Added subscribe bar (including subscribe button) to default theme
+- Added accessibility labels to buttons
 
 ## 2018-03-08
 

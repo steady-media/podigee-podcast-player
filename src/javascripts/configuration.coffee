@@ -68,6 +68,7 @@ class Configuration
 
     @app.extensionOptions = @configuration.extensions || {}
 
+    @app.customOptions = @configuration.customOptions
     @configuration.options ?= {}
     @app.options = _.extend(@defaultOptions, @configuration.options, @frameOptions)
     @app.options.parentLocationHash = @configuration.parentLocationHash
@@ -111,10 +112,24 @@ class Configuration
     # Using a <iframe> tag is considered the default
     iframeMode: 'iframe'
     locale: 'en-US'
+    theme: 'default'
+    themeHtml: null
+    themeCss: null
+    customStyle: null
+    startPanel: null
   }
 
   configureTemplating: =>
     rivets.configure(
       prefix: 'pp'
     )
+
+    # make links text open in parent window
+    rivets.formatters.description = (text) =>
+      elem = document.createElement('div')
+      elem.innerHTML = text.trim()
+      elem.querySelectorAll('a').forEach (link) =>
+        link.target = '_parent'
+      elem.innerHTML
+
 module.exports = Configuration
