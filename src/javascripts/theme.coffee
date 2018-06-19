@@ -15,6 +15,7 @@ class Theme
     options = @app.extensionOptions.SubscribeBar
     {
       showSubscribeBar: options?.disabled == false,
+      showSubscribeButton: !@app.isInAMPMode(),
       translations: {
         playPause: @t('theme.playPause'),
         backward: @t('theme.backward'),
@@ -25,6 +26,7 @@ class Theme
         podcastOnItunes: @t('subscribeBar.podcastOnItunes'),
         podcastOnSpotify: @t('subscribeBar.podcastOnSpotify'),
         podcastOnDeezer: @t('subscribeBar.podcastOnDeezer'),
+        podcastOnAlexa: @t('subscribeBar.podcastOnAlexa'),
         subscribe: @t('subscribeBar.subscribe')
       },
       customOptions: @app.customOptions,
