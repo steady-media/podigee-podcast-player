@@ -106,18 +106,18 @@ class Share extends Extension
         <li><a pp-href="shareLinks.email" class="share-link-email" target="_blank">#{@t('share.email')}</a></li>
       </ul>
       <div class="share-episode-link">
-        <h3>#{@t('share.copy_episode_link')}</h3>
+        <h3 class="share-copy-title">#{@t('share.copy_episode_link')}</h3>
         <p>
           <input class="share-copy-url" pp-value="url">
         </p>
       </div>
       <div class="share-deeplink">
         <input type="checkbox" pp-checked="showUrlWithTime" pp-on-change="updateContext">
-        #{@t('share.start_at')}
+        <span class="share-start-at">#{@t('share.start_at')}</span>
         <input type="text" pp-value="currentTime" disabled="disabled">
       </div>
       <div class="share-embed" pp-show="showEmbedUrl">
-        <h3>#{@t('share.embed_player')}</h3>
+        <h3 class="share-embed-title">#{@t('share.embed_player')}</h3>
         <input class="share-embed-code" pp-value="embedCode"/>
       </div>
     </div>

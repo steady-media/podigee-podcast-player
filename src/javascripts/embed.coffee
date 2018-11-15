@@ -55,15 +55,25 @@ class Iframe
     @iframe.style.border = '0'
     @iframe.style.overflowY = 'hidden'
     @iframe.style.transition = 'height 100ms linear'
-    @iframe.width = "100%"
+    @iframe.style.minWidth = '100%'
+    @iframe.width = "1px"
     @iframe
 
   setupListeners: ->
     IframeResizer.listen('resizePlayer', @iframe)
 
   setupSubscribeButton: ->
-    subscribeButton = new SubscribeButtonTrigger(@iframe)
-    subscribeButton.listen()
+    window.addEventListener 'message', ((event) =>
+      try
+        eventData = JSON.parse(event.data || event.originalEvent.data)
+      catch
+        return
+      return unless eventData.id == @iframe.id
+      return unless eventData.listenTo == 'loadSubscribeButton'
+
+      subscribeButton = new SubscribeButtonTrigger(@iframe)
+      subscribeButton.listen()
+    ), false
 
   replaceElem: ->
     @iframe.className += @elem.className
