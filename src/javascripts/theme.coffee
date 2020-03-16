@@ -23,7 +23,7 @@ class Theme
         playPause: @t('theme.playPause'),
         backward: @t('theme.backward'),
         forward: @t('theme.forward'),
-        speed: @t('theme.changePlaybackSpeed'),
+        changePlaybackSpeed: @t('theme.changePlaybackSpeed'),
 
         allEpisodes: @t('subscribeBar.allEpisodes'),
         podcastOnItunes: @t('subscribeBar.podcastOnItunes'),
@@ -33,7 +33,8 @@ class Theme
         subscribe: @t('subscribeBar.subscribe')
       },
       customOptions: @app.customOptions,
-      or: @orFunction
+      or: @orFunction,
+      locale: @app.i18n.locale
     }
 
   # used in template to fall back to arg2 if arg1 is undefined or null
@@ -59,6 +60,7 @@ class Theme
     @addEmbedModeClass()
     @findElements()
     @bindCoverLoad()
+    @initializeSpeedToggle()
 
     return @elem
 
@@ -82,8 +84,8 @@ class Theme
 
   loadInternalTheme: (name, themeHtml, themeCss) =>
     pathPrefix = "themes/#{name}/index"
-    @loadCss(themeCss || "#{pathPrefix}.css")
-    @loadHtml(themeHtml || "#{pathPrefix}.html")
+    @loadCss(themeCss || "#{pathPrefix}.css?#{@app.version}")
+    @loadHtml(themeHtml || "#{pathPrefix}.html?#{@app.version}")
 
   loadHtml: (path) =>
     loaded = $.Deferred()
@@ -105,9 +107,13 @@ class Theme
 
   addPlayingClass: ->
     @elem.addClass('playing')
+    @playPauseElement[0].title = @t('theme.pause')
+    @playPauseElement[0].setAttribute('aria-label', @t('theme.pause'))
 
   removePlayingClass: ->
     @elem.removeClass('playing')
+    @playPauseElement[0].title = @t('theme.play')
+    @playPauseElement[0].setAttribute('aria-label', @t('theme.play'))
 
   addLoadingClass: ->
     @removePlayingClass()
@@ -132,18 +138,35 @@ class Theme
     @skipForwardElement = @elem.find('.skip-forward-button')
     @skipBackwardElement = @elem.find('.skip-backward-button')
     @speedElement = @elem.find('.speed-toggle')
+    @speedSelectElement = @elem.find('.speed-select')
     @coverImage = @elem.find('.cover-image')
     @subscribeButton = @elem.find('.subscribe-button')
 
-    @subscribeButton.on 'click', () => SubscribeButton.open(@app)
+    @subscribeButton.on 'click', () =>
+      @app.emit('subscribeIntent', 'subscribeButton')
+      SubscribeButton.open(@app)
+
+    @connectionLinks = @elem.find('.podcast-connections-items a')
+    @connectionLinks.on 'click', @handleConnectionClick
 
     @buttons = @elem.find('.buttons')
     @panels = @elem.find('.panels')
-    @panels.hide() unless @app.isInIframeMode()
+    @panels.hide() unless @app.isInIframeMode() || @app.options.startPanels
+    @subscribeButton.hide() if @app.isInIframeMode()
 
   bindCoverLoad: =>
     @coverImage.on 'load', =>
       @app.sendSizeChange()
+
+  handleConnectionClick: (event) =>
+    link = event.currentTarget
+    linkTarget = link.attributes['pp-href'].value
+    service = linkTarget.split('.')[1]
+    @app.emit('subscribeIntent', service)
+
+  initializeSpeedToggle: =>
+    @speedElement.text('1x')
+    @speedSelectElement.val('1.0')
 
   changeActiveButton: (event) =>
     button = $(event.target)
@@ -171,6 +194,10 @@ class Theme
     if extension.name() == @app.options.startPanel
       extension.button.trigger('click')
 
+    if @app.options.startPanels && @app.options.startPanels.indexOf(extension.name()) != -1
+      extension.panel.show()
+      @panels.toggleClass("#{extension.panel[0].className}-open")
+
     if !@app.options.startPanel && @app.isInIframeMode()
       @buttons.hide()
       @panels.hide()
@@ -182,20 +209,27 @@ class Theme
   activePanel: null
   togglePanel: (elem) =>
     return unless elem
-    if @activePanel?
-      if @activePanel == elem
-        if !@app.isInIframeMode()
-          @activePanel.slideToggle(@animationOptions())
-          @panels.slideToggle(@animationOptions())
-          @activePanel = null
-      else
-        @activePanel.slideToggle(@animationOptions())
-        elem.slideToggle(@animationOptions())
-        @activePanel = elem
-    else
-      unless @app.isInIframeMode()
-        @panels.slideToggle(@animationOptions())
+    if @app.isInMultiPanelMode()
       elem.slideToggle(@animationOptions())
-      @activePanel = elem
+      @panels.toggleClass("#{elem[0].className}-open")
+    else
+      if @activePanel?
+        if @activePanel == elem
+          if !@app.isInIframeMode()
+            @activePanel.slideToggle(@animationOptions())
+            @panels.slideToggle(@animationOptions())
+            @panels.removeClass("#{elem[0].className}-open")
+            @activePanel = null
+        else
+          @activePanel.slideToggle(@animationOptions())
+          elem.slideToggle(@animationOptions())
+          @panels.addClass("#{elem[0].className}-open")
+          @activePanel = elem
+      else
+        unless @app.isInIframeMode()
+          @panels.slideToggle(@animationOptions())
+        elem.slideToggle(@animationOptions())
+        @panels.addClass("#{elem[0].className}-open")
+        @activePanel = elem
 
 module.exports = Theme
