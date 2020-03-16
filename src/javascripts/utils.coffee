@@ -86,7 +86,7 @@ class Utils
       return false
 
   @scaleImage: (url, size) ->
-    return url if url == null
+    return url if !url
     return url unless url.match(/images\.podigee\.com/)
 
     url.replace(/\/\d+x,/, "/#{size}x,")
