@@ -22,18 +22,35 @@ class PodigeePodcastPlayer
     ChapterMarks,
     Download,
     EpisodeInfo,
+    Share,
     Playlist,
     Playerjs,
-    Share,
     Transcript,
   ]
 
   constructor: (@elemClass) ->
-    @getConfiguration().loaded.done =>
+    @version = window.VERSION
+    @initConfiguration().loaded.done =>
       @renderTheme().done =>
         @initPlayer()
 
   extensions: {}
+
+  # at the moment only 'subscribeIntent'
+  listener: {}
+
+  addEventListener: (kind, callback) ->
+    existingListeners = @listener[kind]
+    if (!existingListeners)
+      @listener[kind] = []
+
+    @listener[kind].push(callback)
+
+  emit: (kind, payload) =>
+    callbacks = @listener[kind]
+    return false unless callbacks or callbacks.length == 0
+
+    callbacks.forEach (cb) => cb?(payload)
 
   getProductionData: () ->
     return unless @episode.productionDataUrl
@@ -42,8 +59,8 @@ class PodigeePodcastPlayer
     $.getJSON(@episode.productionDataUrl).done (data) =>
       self.episode.productionData = data.data
 
-  getConfiguration: () ->
-    @configuration = new Configuration(this)
+  initConfiguration: (configurationUrl) ->
+    @configuration = new Configuration(this, configurationUrl)
 
   renderTheme: =>
     rendered = $.Deferred()
@@ -65,6 +82,16 @@ class PodigeePodcastPlayer
     @bindButtons()
     @initializeExtensions()
     @bindWindowResizing()
+
+  switchEpisode: (episode, activeExtension) =>
+    @episode = episode
+    @theme.updateView()
+
+    @player.loadFile()
+    @player.setCurrentTime(0)
+    @player.play()
+    @initializeExtensions(activeExtension)
+    @extensions.ProgressBar.updateView()
 
   mediaLoaded: =>
     window.setTimeout @sendSizeChange, 0
@@ -93,7 +120,7 @@ class PodigeePodcastPlayer
   mediaEnded: =>
     @player.media.currentTime = 0
     @extensions.ProgressBar.updateTime()
-    @togglePlayState()
+    @theme.removePlayingClass()
 
   tempPlayBackSpeed: null
   adjustPlaySpeed: (timeString) =>
@@ -140,18 +167,28 @@ class PodigeePodcastPlayer
       @player.changePlaySpeed()
       @updateSpeedDisplay()
 
+    @theme.speedSelectElement.change (event) =>
+      newSpeed = parseFloat(event.target.value)
+      @player.changePlaySpeed(newSpeed)
+      @updateSpeedDisplay()
+
   updateSpeedDisplay: () ->
     @theme.speedElement.text("#{@options.currentPlaybackRate}x")
 
   initializeExtensions: (currentlyActiveExtension) =>
     self = this
+    Object.keys(@extensions).forEach (name) =>
+      @extensions[name].destroy()
+
     @extensions = {}
     @theme.removeButtons()
     @theme.removePanels()
     PodigeePodcastPlayer.defaultExtensions.forEach (extension) =>
-      self.extensions[extension.extension.name] = new extension(self)
+      name = extension.extension.name
+      self.extensions[name] = new extension(self)
+      return if self.options.startPanels && self.options.startPanels.length
       if currentlyActiveExtension instanceof extension
-        self.theme.togglePanel(self.extensions[extension.extension.name].panel)
+        self.theme.togglePanel(self.extensions[name].panel)
 
   bindWindowResizing: =>
     $(window).on('resize', _.debounce(@sendSizeChange, 250))
@@ -168,6 +205,9 @@ class PodigeePodcastPlayer
     window.parent.postMessage(resizeData, '*')
 
     @extensions.ProgressBar?.updateBarWidths()
+
+  isInMultiPanelMode: ->
+    @options.startPanels && @options.startPanels.length
 
   isInIframeMode: ->
     @options.iframeMode == 'iframe'

@@ -22,7 +22,7 @@ class Utils
     return unless typeof seconds == 'number'
     hours   = Math.floor(seconds / 3600)
     minutes = Math.floor((seconds - (hours * 3600)) / 60)
-    seconds = seconds - (hours * 3600) - (minutes * 60)
+    seconds = Math.floor(seconds - (hours * 3600) - (minutes * 60))
 
     seconds = seconds.toFixed(0)
 
@@ -68,6 +68,12 @@ class Utils
     catch
       return true
 
+  @isLteIE11: () ->
+    try
+      return navigator.appVersion.indexOf("Trident/7.0") != -1
+    catch
+      return true
+
   # check if Safari 10 or below is used
   @isLteSafari10: () ->
     try
@@ -78,5 +84,11 @@ class Utils
       return false
     catch
       return false
+
+  @scaleImage: (url, size) ->
+    return url if !url
+    return url unless url.match(/images\.podigee\.com/)
+
+    url.replace(/\/\d+x,/, "/#{size}x,")
 
 module.exports = Utils

@@ -26,9 +26,17 @@ var paths = {
   fonts: ['./src/fonts/**', './vendor/fonts/**'],
   themes: {
     html: ['./src/themes/**/index.html'],
-    css: ['./src/themes/**/*.scss']
+    css: ['./src/themes/**/index.scss'],
+    css_all: ['./src/themes/**/*.scss'],
+    images: ['./src/themes/**/*.png', './src/themes/**/*.jpg']
   }
 };
+
+var getVersion = function() {
+  return require('child_process')
+    .execSync('git rev-parse HEAD')
+    .toString().trim().substring(0, 5)
+}
 
 gulp.task('stylesheets', function() {
   return gulp.src(paths.main_stylesheet)
@@ -112,6 +120,14 @@ gulp.task('html', ['javascripts', 'stylesheets'], function() {
         }
       })
     )
+    .pipe(
+      inject(gulp.src(['./build/javascripts/podigee-podcast-player-embed.js'], {read: true}), {
+        starttag: '<!-- inject:head:version -->',
+        transform: function (filePath, file) {
+          return '<script>window.VERSION = "' + getVersion() + '"</script>'
+        }
+      })
+    )
     .pipe(gulp.dest('./build'))
     .pipe(connect.reload())
 })
@@ -136,6 +152,10 @@ gulp.task('fonts', function() {
 
 gulp.task('themes', function() {
   gulp.src(paths.themes.html)
+    .pipe(gulp.dest('./build/themes'))
+    .pipe(connect.reload())
+
+  gulp.src(paths.themes.images)
     .pipe(gulp.dest('./build/themes'))
     .pipe(connect.reload())
 
@@ -171,7 +191,8 @@ gulp.task('watch', function() {
   gulp.watch(paths.html, ['html-dev'])
   gulp.watch(paths.images, ['images'])
   gulp.watch(paths.themes.html, ['themes'])
-  gulp.watch(paths.themes.css, ['themes'])
+  gulp.watch(paths.themes.css_all, ['themes'])
+  gulp.watch(paths.themes.images, ['themes'])
 })
 
 gulp.task('connect', function() {
