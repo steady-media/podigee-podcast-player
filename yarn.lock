@@ -1861,6 +1861,15 @@ gulp-rename@^2.0.0:
   resolved "https://registry.yarnpkg.com/gulp-rename/-/gulp-rename-2.0.0.tgz#9bbc3962b0c0f52fc67cd5eaff6c223ec5b9cf6c"
   integrity sha512-97Vba4KBzbYmR5VBs9mWmK+HwIf5mj+/zioxfZhOKeXtx5ZjBk57KFlePf5nxq9QsTtFl0ejnHE3zTC9MHXqyQ==
 
+gulp-sass-unicode@^1.0.1:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/gulp-sass-unicode/-/gulp-sass-unicode-1.0.5.tgz#ea751dc4556aa0010e12ef51f97910ace1ffa179"
+  integrity sha512-CiV9RpZWKbKKmgz+tw9a0xyCDljYkVqX3rmMV6mfsUpSyqMhP7I5lfoZaF4S81vJaqMxhORQmQWptB8kVBGxRA==
+  dependencies:
+    gulp "^4.0.0"
+    plugin-error "^1.0.1"
+    through2 "^3.0.1"
+
 gulp-sass@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/gulp-sass/-/gulp-sass-4.1.0.tgz#486d7443c32d42bf31a6b1573ebbdaa361de7427"
@@ -1942,7 +1951,7 @@ gulp-watch@^5.0.1:
     vinyl "^2.1.0"
     vinyl-file "^2.0.0"
 
-gulp@^4.0.2:
+gulp@^4.0.0, gulp@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/gulp/-/gulp-4.0.2.tgz#543651070fd0f6ab0a0650c6a3e6ff5a7cb09caa"
   integrity sha512-dvEs27SCZt2ibF29xYgmnwwCYZxdxhQ/+LFWlbAW8y7jt68L/65402Lz3+CKy0Ov4rOs+NERmDq7YlZaDqUIfA==
