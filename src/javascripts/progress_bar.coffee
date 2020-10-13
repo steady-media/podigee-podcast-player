@@ -11,7 +11,8 @@ class ProgressBar extends Extension
     name: 'ProgressBar'
     type: 'progress'
 
-  constructor: (@app) ->
+  constructor: (app) ->
+    super(app)
     return unless @app.theme.progressBarElement.length
 
     @elem = @app.theme.progressBarElement
