@@ -61,7 +61,6 @@ class Iframe
     scriptSrc.match(/(^.*\/)/)[0].replace(/javascripts\/$/, '').replace(/\/$/, '')
 
   buildIframe: ->
-    console.log(@configuration)
     @iframe = document.createElement('iframe')
     @iframe.id = @id
     @iframe.scrolling = 'no'
