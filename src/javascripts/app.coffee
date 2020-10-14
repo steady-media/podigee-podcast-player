@@ -16,6 +16,8 @@ Playerjs = require('./extensions/playerjs.coffee')
 Share = require('./extensions/share.coffee')
 Transcript = require('./extensions/transcript.coffee')
 
+require('focus-visible')
+
 class PodigeePodcastPlayer
   @defaultExtensions: [
     ProgressBar,

@@ -1,6 +1,10 @@
 @import 'font_faces';
 @import 'variables';
 
+html[data-js-focus-visible] :focus:not(.focus-visible) {
+  outline: none !important;
+}
+
 .podcast-player {
   &,
   *,
