@@ -1,0 +1,37 @@
+// if you are changing font files here, take a look in the same file in main_app
+
+@font-face {
+  font-family: 'CircularStd';
+  src: url('https://steady.imgix.net/fonts/circular-std-extended/book.eot');
+  src: url('https://steady.imgix.net/fonts/circular-std-extended/book.eot?#iefix') format('embedded-opentype'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/book.woff') format('woff'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/book.ttf') format('truetype'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/book.svg#bcc26993292869431e54c666aafa8fcd') format('svg');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CircularStd';
+  src: url('https://steady.imgix.net/fonts/circular-std-extended/bold.eot');
+  src: url('https://steady.imgix.net/fonts/circular-std-extended/bold.eot?#iefix') format('embedded-opentype'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/bold.woff') format('woff'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/bold.ttf') format('truetype'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/bold.svg#bcc26993292869431e54c666aafa8fcd') format('svg');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CircularStd';
+  src: url('https://steady.imgix.net/fonts/circular-std-extended/book-italic.eot');
+  src: url('https://steady.imgix.net/fonts/circular-std-extended/book-italic.eot?#iefix') format('embedded-opentype'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/book-italic.woff') format('woff'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/book-italic.ttf') format('truetype'),
+    url('https://steady.imgix.net/fonts/circular-std-extended/book-italic.svg#bcc26993292869431e54c666aafa8fcd') format('svg');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}

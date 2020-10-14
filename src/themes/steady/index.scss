@@ -1,3 +1,4 @@
+@import 'font_faces';
 @import 'variables';
 
 .podcast-player {
@@ -10,16 +11,20 @@
     box-sizing: border-box;
   }
 
-  background-color: $background-color;
-  color: #222;
-  font-family: Helvetica;
+  *:focus {
+    @include custom_outline();
+  }
+
+  @include font_size_xxs();
+  background-color: $background_color;
+  color: $text_color;
+  font-family: 'CircularStd', Helvetica, sans-serif;
   min-width: 100%;
   overflow: hidden;
   position: relative;
   width: 1px;
 
   a {
-    color: $highlight1;
     text-decoration: none;
 
     &:hover {
@@ -35,121 +40,66 @@
 
   .main-player {
     position: relative;
-  }
+    display: flex;
+    align-items: center;
 
-  .episode-basic-info {
-    max-height: 90px;
-    padding: 23px $default-padding 0;
-    position: relative;
-    overflow: hidden;
-
-    .episode-title {
-      color: $highlight1;
-      font-size: 18px;
-      font-weight: 600;
-      line-height: 1.4em;
-      margin-bottom: 3px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    > *:not(:last-child) {
+      margin-right: 10px;
     }
-
-    .episode-subtitle {
-      color: $default-color;
-      font-size: 16px;
-      min-height: 18px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
-  .episode-info-open .episode-description {
-    img {
-      max-width: 100%;
-    }
-  }
-
-  .cover-image {
-    float: right;
-    height: 90px;
-    padding: 5px;
   }
 
   .controls {
     float: left;
-    height: 90px;
+    flex: 0 0 auto;
 
     .play-button {
-      border: 3px solid $light-grey;
-      border-radius: 100px;
-      color: $dark-grey;
-      font-size: 56px;
-      height: 70px;
-      margin: 10px 0 0 10px;
-      padding: 0;
-      width: 70px;
-    }
-  }
-
-  .controls-advanced {
-    left: 155px;
-    margin-top: -1px;
-    position: absolute;
-
-    button {
-      color: $dark-grey;
-      font-size: 18px;
-    }
-
-    button:hover {
-      color: $highlight1;
-    }
-
-    .speed-select {
-      -moz-appearance: none;
-      -webkit-appearance: none;
-      appearance: none;
-      border: 0;
+      border-radius: 100%;
       background-color: transparent;
-      color: $dark-grey;
-      font-size: 14px;
-      position: relative;
-      top: -3px;
-    }
+      border: 2px solid $play_button_color;
+      color: $play_button_color;
+      font-size: 0.7 * $play_button_size;
+      height: $play_button_size;
+      padding: 0;
+      width: $play_button_size;
 
-    .speed-select::-ms-expand {
-      display: none;
+      &:before {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        content: '' !important;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('data:image/svg+xml;utf8,<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M 1.183 1.339 L 1.183 12.676 C 1.183 13.467 2.058 13.945 2.723 13.517 L 11.541 7.849 C 12.153 7.455 12.153 6.56 11.541 6.167 L 2.723 0.498 C 2.058 0.07 1.183 0.548 1.183 1.339 Z" fill="%23585266"/></svg>');
+      }
     }
   }
 
-  &.playing .controls-advanced {
-    display: block;
+  &.playing .controls .play-button:before {
+    background-image: url('data:image/svg+xml;utf8,<svg width="8" height="16" viewBox="0 0 8 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect y="0.5" width="2.5" height="15" rx="1" fill="%23585266"/><rect x="5" y="0.5" width="2.5" height="15" rx="1" fill="%23585266"/></svg>');
   }
 
   .progress-bar {
     clear: both;
     overflow: hidden;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
 
-    .progress-bar-time-played {
-      color: $dark-grey;
-      cursor: pointer;
-      font-size: 14px;
-      left: 85px;
-      position: absolute;
-      text-align: left;
-      top: 69px;
-      width: 70px;
+    > *:not(:last-child) {
+      margin-right: 10px;
     }
 
-    .progress-bar-time-played:hover {
-      color: $highlight1;
+    .progress-bar-time-played {
+      color: $text_color;
+      cursor: pointer;
+      padding: 0;
     }
 
     .progress-bar-rail {
-      background-color: $light-grey;
+      flex: 1 1 auto;
+      background-color: $play_bar_unloaded_color;
       cursor: ew-resize;
-      min-height: 10px;
+      height: $progress_bar_rail_height;
       overflow: hidden;
       position: relative;
     }
@@ -161,7 +111,7 @@
 
   .progress-bar-played,
   .progress-bar-loaded {
-    background-color: $highlight2;
+    background-color: $play_bar_played_color;
     display: block;
     height: 100%;
     position: absolute;
@@ -170,11 +120,11 @@
   }
 
   .progress-bar-loaded {
-    background-color: $dark-grey;
+    background-color: $play_bar_loaded_color;
   }
 
   .progress-bar-buffering {
-    background-color: red;
+    background-color: $play_bar_unloaded_color;
 
     &:after {
       animation: move 2s linear infinite;
@@ -211,410 +161,5 @@
       }
     }
   }
-
-  .buttons {
-    position: absolute;
-    right: 90px;
-    top: 68px;
-
-    button {
-      color: $dark-grey;
-      display: inline-block;
-      font-size: 16px;
-      text-align: center;
-      width: 26px;
-    }
-
-    button:hover,
-    button.button-active {
-      color: $highlight1;
-    }
-
-    img {
-      height: 14px;
-    }
-  }
-
-  .panels {
-    color: $default-color;
-    font-size: 14px;
-    font-weight: 300;
-    height: auto;
-    line-height: 18px;
-
-    & > div {
-      height: 100%;
-      overflow: hidden;
-      padding: 0 0 0 $default-padding;
-      position: relative;
-    }
-
-    h3 {
-      margin: 12px 0;
-    }
-  }
-
-  .panels {
-    .chaptermarks,
-    .playlist {
-      height: 400px;
-
-      ul {
-        display: block;
-        height: calc(100% - 90px);
-        margin: 0;
-        padding: 0;
-        overflow-y: scroll;
-
-        li {
-          background-color: none;
-          cursor: pointer;
-          display: inline-block;
-          line-height: 30px;
-          list-style: none;
-          padding: 0 25px 0 5px;
-          position: relative;
-          width: 100%;
-
-          & + li {
-            border-top: 1px solid $light-grey;
-          }
-
-          &:hover {
-            background-color: $light-grey;
-          }
-
-          &.active {
-            background-color: lighten($highlight2, 55%);
-          }
-
-          img {
-            float: left;
-            width: 30px;
-          }
-
-          span {
-            display: inline;
-            height: 100%;
-            margin: 0 0 0 10px;
-            overflow: hidden;
-          }
-
-          .chaptermark-start {
-            float: left;
-            margin-left: 0;
-          }
-
-          .chaptermark-image + .chaptermark-start {
-            margin-left: 10px;
-          }
-
-          .chaptermark-href .episode-link,
-          .playlist-episode-number {
-            display: none;
-          }
-
-          .playlist-episode-duration {
-            float: right;
-          }
-
-          a {
-            font-size: 16px;
-            height: 13px;
-            padding: 0;
-            position: absolute;
-            right: 5px;
-            top: 3px;
-            width: 13px;
-
-            svg {
-              color: $default-color;
-              fill: currentColor;
-            }
-          }
-        }
-      }
-
-      .buttons {
-        padding-top: 5px;
-        position: static;
-        text-align: center;
-
-        button {
-          font-size: 14px;
-          width: auto;
-        }
-      }
-    }
-
-    .playlist ul li {
-      span {
-        margin-left: 0;
-      }
-    }
-
-    .episode-info {
-      font-size: 16px;
-      height: calc(100% - 12px);
-      overflow-y: auto;
-      padding: 0 12px;
-
-      .episode-title {
-        font-size: 22px;
-      }
-
-      .episode-subtitle {
-        font-size: 18px;
-        font-weight: 300;
-      }
-    }
-
-    .share {
-      padding: 12px;
-
-      .share-copy-url,
-      .share-embed-code {
-        background: transparent;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        color: rgb(77, 77, 77);
-        font-size: 20px;
-        outline: none;
-        padding: 4px;
-        text-align: center;
-        width: 100%;
-      }
-    }
-
-    .transcript {
-      height: 400px;
-
-      h3 {
-        float: left;
-      }
-
-      .search,
-      .search-result {
-        display: inline-block;
-      }
-
-      .search {
-        float: right;
-        padding: 10px 15px;
-      }
-
-      .search-clear {
-        color: inherit;
-        font-size: 150%;
-        left: calc(100% - 40px);
-        position: absolute;
-        top: 6px;
-      }
-
-      .transcript-text {
-        height: calc(100% - 54px);
-        list-style: none;
-        overflow-y: auto;
-        padding: 0 12px 0 0;
-        width: 100%;
-
-        li {
-          cursor: pointer;
-          font-size: 1.2em;
-          line-height: 1.4em;
-          margin-bottom: 8px;
-
-          &:hover,
-          &.active {
-            color: #222;
-          }
-
-          &.search-highlight > * {
-            background-color: $transcript-search-highlight;
-          }
-        }
-      }
-    }
-  }
-
-  .footer {
-    padding: 12px;
-    position: relative;
-    width: 100%;
-
-    .subscribe-button {
-      background: transparent;
-      border: 1px solid;
-      border-radius: 3px;
-      font-size: 14px;
-      font-weight: bold;
-      letter-spacing: 0.8px;
-      outline: none;
-      padding: 4px 6px;
-    }
-
-    .podcast-connections-items {
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-    }
-
-    .podcast-connections-item {
-      display: inline;
-      list-style: none;
-      margin-left: 10px;
-
-      a {
-        text-decoration: none;
-      }
-
-      svg {
-        fill: currentColor;
-        vertical-align: middle;
-      }
-
-      &.podcast-connections-item-alexa {
-        margin-left: 0;
-      }
-    }
-
-    .all-episodes-link {
-      float: right;
-      font-size: 14px;
-      font-weight: bold;
-      letter-spacing: 0.8px;
-      padding: 6px 6px;
-      text-decoration: none;
-    }
-  }
 }
 
-.podcast-player.mode-script {
-  @media (max-width: $mobile-breakpoint) {
-    .cover-image {
-      border: 12px solid $background-color;
-      border-bottom: 0;
-      display: none;
-      float: none;
-      height: auto;
-      width: 100%;
-    }
-
-    .episode-basic-info {
-      .episode-title {
-        font-size: 16px;
-      }
-
-      .episode-subtitle {
-        font-size: 14px;
-        min-height: 16px;
-      }
-    }
-
-    .controls {
-      height: 115px;
-      position: relative;
-    }
-
-    .controls-advanced {
-      bottom: 20px;
-      left: 0;
-      top: auto;
-
-      button {
-        font-size: 24px;
-        padding: 0 8px;
-      }
-    }
-
-    .buttons {
-      margin-top: 25px;
-      position: static;
-      text-align: right;
-
-      button {
-        font-size: 24px;
-        padding: 0 8px;
-        width: 35px;
-      }
-    }
-
-    .progress-bar {
-      .progress-bar-rail {
-        min-height: 20px;
-      }
-    }
-
-    &.playing .progress-bar .progress-bar-time-played {
-      display: none;
-    }
-
-    .panels .transcript {
-      h3 {
-        float: none;
-      }
-
-      .search {
-        display: block;
-        float: none;
-        overflow: hidden;
-        padding: 0 24px 0 0;
-        position: relative;
-      }
-
-      .search-input {
-        float: left;
-        padding-right: 100px;
-        width: 100%;
-      }
-
-      .search-result {
-        float: right;
-        position: absolute;
-        right: 44px;
-        top: 4px;
-      }
-
-      .search-clear {
-        color: inherit;
-        font-size: 150%;
-        left: calc(100% - 44px);
-        position: absolute;
-        top: -2px;
-      }
-
-      .transcript-text {
-        height: calc(100% - 90px);
-      }
-    }
-
-    .footer {
-      padding: 12px 6px;
-
-      .subscribe-button {
-        font-size: 12px;
-      }
-
-      .podcast-connections-item {
-        margin-left: 5px;
-      }
-
-      .all-episodes-link {
-        font-size: 12px;
-        margin-top: 4px;
-      }
-    }
-  }
-}
-
-.podcast-player.mode-iframe {
-  @media (max-width: $mobile-breakpoint) {
-    .cover-image {
-      display: none;
-    }
-
-    .buttons {
-      right: 0;
-    }
-  }
-}
