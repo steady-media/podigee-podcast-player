@@ -61,6 +61,7 @@ class Iframe
     scriptSrc.match(/(^.*\/)/)[0].replace(/javascripts\/$/, '').replace(/\/$/, '')
 
   buildIframe: ->
+    console.log(@configuration)
     @iframe = document.createElement('iframe')
     @iframe.id = @id
     @iframe.scrolling = 'no'
@@ -71,8 +72,8 @@ class Iframe
     @iframe.style.minWidth = '100%'
     @iframe.style.display = 'block'
     @iframe.width = '1px'
-    @iframe.title = 'Podcast'
-    @iframe.setAttribute('aria-label', 'Podcast')
+    @iframe.title = @configuration.customOptions.iframeTitle
+    @iframe.setAttribute('aria-label', @configuration.customOptions.iframeTitle)
     @iframe
 
   setupListeners: ->
