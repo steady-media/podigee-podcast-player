@@ -82,6 +82,20 @@ html[data-js-focus-visible] :focus:not(.focus-visible) {
     background-image: url('data:image/svg+xml;utf8,<svg width="8" height="16" viewBox="0 0 8 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect y="0.5" width="2.5" height="15" rx="1" fill="%23585266"/><rect x="5" y="0.5" width="2.5" height="15" rx="1" fill="%23585266"/></svg>');
   }
 
+  .progress-bar-container {
+    flex: 1 1 auto;
+    display: flex;
+
+    > *:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    .duration {
+      flex: 0 0 auto;
+      color: $text_color;
+    }
+  }
+
   .progress-bar {
     clear: both;
     overflow: hidden;
@@ -94,6 +108,7 @@ html[data-js-focus-visible] :focus:not(.focus-visible) {
     }
 
     .progress-bar-time-played {
+      @include font_size_xxs();
       color: $text_color;
       cursor: pointer;
       padding: 0;
