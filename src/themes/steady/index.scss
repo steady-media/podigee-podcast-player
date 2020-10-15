@@ -6,6 +6,20 @@ html[data-js-focus-visible] :focus:not(.focus-visible) {
 }
 
 .podcast-player {
+  @include font_size_xxs();
+  background-color: $background_color;
+  color: $text_color;
+  font-family: 'CircularStd', Helvetica, sans-serif;
+  min-width: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 1px;
+
+  // form inputs do not inherit font-family
+  button, input, textarea {
+    font-family: 'CircularStd', Helvetica, sans-serif;
+  }
+
   &,
   *,
   *:before,
@@ -18,15 +32,6 @@ html[data-js-focus-visible] :focus:not(.focus-visible) {
   *:focus {
     @include custom_outline();
   }
-
-  @include font_size_xxs();
-  background-color: $background_color;
-  color: $text_color;
-  font-family: 'CircularStd', Helvetica, sans-serif;
-  min-width: 100%;
-  overflow: hidden;
-  position: relative;
-  width: 1px;
 
   a {
     text-decoration: none;
