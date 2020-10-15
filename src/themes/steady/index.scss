@@ -94,6 +94,17 @@ html[data-js-focus-visible] :focus:not(.focus-visible) {
       flex: 0 0 auto;
       color: $text_color;
     }
+
+    // prevents the progress bar from jumping when the number on the display changes (because different numbers have different widths)
+    // length 5 - 00:00
+    &[data-total-duration-string-length="5"] .progress-bar-time-played {
+      min-width: 3.5em;
+    }
+
+    // length 8 - 00:00:00
+    &[data-total-duration-string-length="8"] .progress-bar-time-played {
+      min-width: 5em;
+    }
   }
 
   .progress-bar {
