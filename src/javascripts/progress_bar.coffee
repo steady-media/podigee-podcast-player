@@ -11,7 +11,8 @@ class ProgressBar extends Extension
     name: 'ProgressBar'
     type: 'progress'
 
-  constructor: (@app) ->
+  constructor: (app) ->
+    super(app)
     return unless @app.theme.progressBarElement.length
 
     @elem = @app.theme.progressBarElement
@@ -47,7 +48,8 @@ class ProgressBar extends Extension
 
   buildTimeString: (time) =>
     timeString = Utils.secondsToHHMMSS(time)
-    if @player.duration < 3600
+    # also trim when total duration unknown
+    if !@player.duration || @player.duration < 3600
       timeString = timeString.replace(/^00:/, '')
     timeString
 

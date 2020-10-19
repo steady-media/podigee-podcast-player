@@ -134,6 +134,9 @@ class Player
       @app.episode.humanDuration = humanDuration
       @duration = @app.episode.duration
       return
+    else
+      # show 00:00 instead of 00:00:00 when unknown
+      @app.episode.humanDuration = Utils.secondsToHHMMSS(0).replace(/^00:/, '')
 
     clear = -> window.clearInterval(interval)
 
@@ -141,7 +144,10 @@ class Player
       return unless @media.readyState > 0
       @app.episode.duration = @media.duration
       @duration = @media.duration
-      @app.episode.humanDuration = Utils.secondsToHHMMSS(_.clone(@app.episode.duration))
+      humanDuration = Utils.secondsToHHMMSS(_.clone(@app.episode.duration))
+      if @app.episode.duration < 3600
+        humanDuration = humanDuration.replace(/^00:/, '')
+      @app.episode.humanDuration = humanDuration
       clear()
     ), 500
 

@@ -1,0 +1,200 @@
+@import 'font_faces';
+@import 'variables';
+
+html[data-js-focus-visible] :focus:not(.focus-visible) {
+  outline: none !important;
+}
+
+.podcast-player {
+  @include font_size_xxs();
+  background-color: $background_color;
+  color: $text_color;
+  font-family: 'CircularStd', Helvetica, sans-serif;
+  min-width: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 1px;
+
+  // form inputs do not inherit font-family
+  button, input, textarea {
+    font-family: 'CircularStd', Helvetica, sans-serif;
+  }
+
+  &,
+  *,
+  *:before,
+  *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  *:focus {
+    @include custom_outline();
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .main-player {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    > *:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .controls {
+    float: left;
+    flex: 0 0 auto;
+
+    .play-button {
+      border-radius: 100%;
+      background-color: transparent;
+      border: 2px solid $play_button_color;
+      color: $play_button_color;
+      font-size: 0.7 * $play_button_size;
+      height: $play_button_size;
+      padding: 0;
+      width: $play_button_size;
+
+      &:before {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        content: '' !important;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('data:image/svg+xml;utf8,<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M 1.183 1.339 L 1.183 12.676 C 1.183 13.467 2.058 13.945 2.723 13.517 L 11.541 7.849 C 12.153 7.455 12.153 6.56 11.541 6.167 L 2.723 0.498 C 2.058 0.07 1.183 0.548 1.183 1.339 Z" fill="%23585266"/></svg>');
+      }
+    }
+  }
+
+  &.playing .controls .play-button:before {
+    background-image: url('data:image/svg+xml;utf8,<svg width="8" height="16" viewBox="0 0 8 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect y="0.5" width="2.5" height="15" rx="1" fill="%23585266"/><rect x="5" y="0.5" width="2.5" height="15" rx="1" fill="%23585266"/></svg>');
+  }
+
+  .progress-bar-container {
+    flex: 1 1 auto;
+    display: flex;
+
+    > *:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    .duration {
+      flex: 0 0 auto;
+      color: $text_color;
+    }
+
+    // prevents the progress bar from jumping when the number on the display changes (because different numbers have different widths)
+    // length 5 - 00:00
+    &[data-total-duration-string-length="5"] .progress-bar-time-played {
+      min-width: 3.5em;
+    }
+
+    // length 8 - 00:00:00
+    &[data-total-duration-string-length="8"] .progress-bar-time-played {
+      min-width: 5em;
+    }
+  }
+
+  .progress-bar {
+    clear: both;
+    overflow: hidden;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+
+    > *:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    .progress-bar-time-played {
+      @include font_size_xxs();
+      color: $text_color;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .progress-bar-rail {
+      flex: 1 1 auto;
+      background-color: $play_bar_unloaded_color;
+      cursor: ew-resize;
+      height: $progress_bar_rail_height;
+      overflow: hidden;
+      position: relative;
+    }
+  }
+
+  &.playing .progress-bar .progress-bar-time-played {
+    display: block;
+  }
+
+  .progress-bar-played,
+  .progress-bar-loaded {
+    background-color: $play_bar_played_color;
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 0;
+  }
+
+  .progress-bar-loaded {
+    background-color: $play_bar_loaded_color;
+  }
+
+  .progress-bar-buffering {
+    background-color: $play_bar_unloaded_color;
+
+    &:after {
+      animation: move 2s linear infinite;
+      background-image: linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+      );
+      background-size: 50px 50px;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      content: '';
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    @keyframes move {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 50px 50px;
+      }
+    }
+  }
+}
+

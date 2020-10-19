@@ -1,0 +1,35 @@
+$primary_color: #ff7264;
+$primary_color_strong: #fc5544;
+$secondary_color: #291e38;
+$white: #fff;
+$black: #000;
+
+// grays
+$gray_1: #ebebf7;
+$gray_2: #d0cfe6;
+$gray_3: #c0bed4;
+$gray_4: #9a95a6;
+$gray_5: #585266;
+
+@mixin custom_outline() {
+  outline: 2px solid rgba($primary_color_strong, 0.7);
+  outline-offset: -2px;
+}
+
+$line_height_default: 1.4;
+// 14px - xxs
+@mixin font_size_xxs($line_height: $line_height_default) { font-size: 0.78rem; line-height: $line_height; }
+
+
+$link_transition_duration: 0.2s;
+
+$background_color: $white;
+$text_color: $gray_5;
+$play_button_color: $gray_5;
+$play_bar_unloaded_color: $gray_2;
+$play_bar_loaded_color: $gray_3;
+$play_bar_played_color: $gray_5;
+
+$play_button_size: 40px;
+$progress_bar_rail_height: 4px;
+

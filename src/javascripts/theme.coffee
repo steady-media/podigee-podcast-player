@@ -53,6 +53,14 @@ class Theme
 
   html: null
   render: =>
+    # http://rivetsjs.com/docs/guide/#formatters
+    # used in our custom Steady theme
+    rivets.formatters.length = (value) =>
+      if value
+        return value.length
+      else
+        return 0
+
     @elem = $(@html)
     @view = rivets.bind(@elem, @context())
     $(@app.elemClass).replaceWith(@elem)

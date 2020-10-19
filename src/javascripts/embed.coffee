@@ -69,9 +69,10 @@ class Iframe
     @iframe.style.overflowY = 'hidden'
     @iframe.style.transition = 'height 100ms linear'
     @iframe.style.minWidth = '100%'
+    @iframe.style.display = 'block'
     @iframe.width = '1px'
-    @iframe.title = 'Podcast'
-    @iframe.setAttribute('aria-label', 'Podcast')
+    @iframe.title = @configuration.customOptions.iframeTitle
+    @iframe.setAttribute('aria-label', @configuration.customOptions.iframeTitle)
     @iframe
 
   setupListeners: ->

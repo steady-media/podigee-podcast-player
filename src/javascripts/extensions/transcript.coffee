@@ -17,7 +17,8 @@ class Transcript extends Extension
     name: 'Transcript'
     type: 'panel'
 
-  constructor: (@app) ->
+  constructor: (app) ->
+    super(app)
     @options = _.extend(@defaultOptions, @app.extensionOptions.Transcript)
 
     return if @options.disabled
