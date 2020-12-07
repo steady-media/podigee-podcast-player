@@ -9,10 +9,7 @@ class Player
   constructor: (@app, elem) ->
     self = this
     self.media = elem
-    if Utils.isIE9()
-      self.media.preload = "metadata"
-    else
-      self.media.preload = "none"
+    self.media.preload = "metadata"
     @loadFile()
     @attachEvents()
     @setInitialTime()
@@ -58,10 +55,12 @@ class Player
 
     @src = files[0].uri
 
-    # If src was already set for the audio element we can immediately set src
-    # If we are dealing with Safari 10 or below we also need to do this
-    if @media.src.length || Utils.isLteSafari10()
-      @media.src = @src
+    # Setting the `src` here along with settings `preload="metadata"` on the
+    # audio element allows us to read the duration after the `loadedmetadata`
+    # event is fired. This should also prevent the `interval` callback in
+    # `setDuration` to continuously poll until the player starts playing, since
+    # the `readyState` never changes without setting the `src`.
+    @media.src = @src
     @setDuration()
 
   # filter out unplayable files
