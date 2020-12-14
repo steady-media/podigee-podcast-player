@@ -196,5 +196,14 @@ html[data-js-focus-visible] :focus:not(.focus-visible) {
       }
     }
   }
+
+  .download-link {
+    color: $play_button_color;
+    font-size: 16px;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 

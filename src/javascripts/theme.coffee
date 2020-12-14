@@ -30,7 +30,9 @@ class Theme
         podcastOnSpotify: @t('subscribeBar.podcastOnSpotify'),
         podcastOnDeezer: @t('subscribeBar.podcastOnDeezer'),
         podcastOnAlexa: @t('subscribeBar.podcastOnAlexa'),
-        subscribe: @t('subscribeBar.subscribe')
+        subscribe: @t('subscribeBar.subscribe'),
+
+        downloadEpisode: @t('download.episode'),
       },
       customOptions: @app.customOptions,
       or: @orFunction,
