@@ -58,7 +58,7 @@ class I18n
       chromecast:
         play: 'Play on chromecast'
       download:
-        episode: 'Download episode'
+        episode: 'Download'
       episode_info:
         more_info: 'Show more info'
         title: 'Episode info'
@@ -101,7 +101,7 @@ class I18n
       chromecast:
         play: 'Auf Chromecast abspielen'
       download:
-        episode: 'Episode herunterladen'
+        episode: 'Herunterladen'
       episode_info:
         more_info: 'Mehr Infos anzeigen'
         title: 'Episoden-Infos'
@@ -144,7 +144,7 @@ class I18n
       chromecast:
         play: 'Reproducir en chromecast'
       download:
-        episode: 'Descargar capítulo'
+        episode: 'Descargar'
       episode_info:
         more_info: 'Mostrar más informaciones'
         title: 'Informaciones del capítulo'
@@ -179,7 +179,7 @@ class I18n
         podcastOnDeezer: 'Ver podcast en Deezer'
         podcastOnAlexa: 'Ver podcast en Alexa'
         subscribe: 'Suscríbete'
-       
+
     'nl-NL':
       chaptermarks:
         show: 'Toon hoofdstukmarkeringen'
@@ -230,7 +230,7 @@ class I18n
       chromecast:
         play: 'Odtwórz w chromecast'
       download:
-        episode: 'Pobierz odcinek'
+        episode: 'Pobierz'
       episode_info:
         more_info: 'Pokaż więcej informacji'
         title: 'Informacje o odcinku'
